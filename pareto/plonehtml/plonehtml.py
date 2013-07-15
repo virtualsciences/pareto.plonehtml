@@ -1,6 +1,20 @@
+from Products.ATContentTypes.content import base
+
+from plone.portlets.interfaces import (
+    IPortletManager, IPortletAssignmentMapping, IPortletRetriever,
+    ILocalPortletAssignable)
+from zope.component import getUtility, getMultiAdapter, ComponentLookupError
+
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.redirector.interfaces import IRedirectionStorage
+
+
 class PloneHtmlProcessor(object):
-    def __init__(self, handler):
+    def __init__(self, handler, dry=False):
         self.handler = handler
+        self.dry = dry
 
     def process(self, context, processed_portlets=None):
         if not context.getId().startswith('portal_'):
@@ -34,11 +48,10 @@ class PloneHtmlProcessor(object):
                     processed_portlets.append(assignment)
                     if hasattr(assignment, 'text'):
                         html = assignment.text
-                        fixed = False
                         html, results, fixed = self.handler(html, context)
                         for info in results:
                             yield (context, portlet, info)
-                        if fixed and not self.request.get('dry'):
+                        if fixed and not self.dry:
                             assignment.text = html
                             assignment._p_changed = True
 
@@ -50,16 +63,8 @@ class PloneHtmlProcessor(object):
                 continue
             fieldname = field.getName()
             html = field.getRaw(context)
-            fixed = False
             html, results, fixed = self.handler(html, context)
             for info in results:
                 yield (context, field, info)
-            if fixed and not self.request.get('dry'):
+            if fixed and not self.dry:
                 field.set(context, html)
-    """ call handler for each snippet of html found in context
-
-        replaces the snippet with the result of handler on that snippet,
-        return information about what objects were processed
-    """
-    for info in walk_context(context, handler):
-        yield info
