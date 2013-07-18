@@ -5,11 +5,6 @@ from plone.portlets.interfaces import (
     ILocalPortletAssignable)
 from zope.component import getUtility, getMultiAdapter, ComponentLookupError
 
-from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.app.redirector.interfaces import IRedirectionStorage
-
 
 class PloneHtmlProcessor(object):
     def __init__(self, handler, dry=False):
