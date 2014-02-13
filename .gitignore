@@ -3,6 +3,6 @@
 bin
 develop-eggs
 parts
-pareto.plonehtml.egg-info
+vs.plonehtml.egg-info
 build
 *.pyc

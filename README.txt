@@ -1,4 +1,4 @@
-pareto.plonehtml
+vs.plonehtml
 ================
 
 Find and process all HTML snippets in a Plone site. Very simple library (no
@@ -10,4 +10,4 @@ HTML and process those snippets.
 Questions, remarks, etc.
 ------------------------
 
-For questions, remarks, etc. send a mail to guido.wesdorp at pareto dot nl.
+For questions, remarks, etc. send a mail to guido.wesdorp at vs dot nl.
